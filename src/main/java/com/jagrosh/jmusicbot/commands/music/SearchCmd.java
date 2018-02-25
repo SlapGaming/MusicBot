@@ -33,17 +33,18 @@ import net.dv8tion.jda.core.entities.Message;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SCSearchCmd extends MusicCommand {
+public class SearchCmd extends AbstractMusicCommand {
 
     private final OrderedMenu.Builder builder;
     private final String searchingEmoji;
-    public SCSearchCmd(Bot bot, String searchingEmoji)
+    public SearchCmd(Bot bot, String searchingEmoji)
     {
         super(bot);
         this.searchingEmoji = searchingEmoji;
-        this.name = "scsearch";
+        this.name = "search";
+        this.aliases = new String[]{"ytsearch"};
         this.arguments = "<query>";
-        this.help = "searches Soundcloud for a provided query";
+        this.help = "searches Youtube for a provided query";
         this.beListening = true;
         this.bePlaying = false;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
@@ -62,7 +63,7 @@ public class SCSearchCmd extends MusicCommand {
             event.reply(event.getClient().getError()+" Please include a query.");
             return;
         }
-        event.reply(searchingEmoji+" Searching... `["+event.getArgs()+"]`",m -> bot.getAudioManager().loadItemOrdered(event.getGuild(), "scsearch:"+event.getArgs(), new ResultHandler(m,event)));
+        event.reply(searchingEmoji+" Searching... `["+event.getArgs()+"]`",m ->bot.getAudioManager().loadItemOrdered(event.getGuild(), "ytsearch:"+event.getArgs(), new ResultHandler(m,event)));
     }
     
     private class ResultHandler implements AudioLoadResultHandler {
@@ -89,11 +90,12 @@ public class SCSearchCmd extends MusicCommand {
         }
 
         @Override
-        public void playlistLoaded(AudioPlaylist playlist) {
+        public void playlistLoaded(AudioPlaylist playlist)
+        {
             builder.setColor(event.getSelfMember().getColor())
                     .setText(FormatUtil.filter(event.getClient().getSuccess()+" Search results for `"+event.getArgs()+"`:"))
                     .setChoices(new String[0])
-                    .setSelection((msg, i) -> {
+                    .setSelection((msg,i) -> {
                         AudioTrack track = playlist.getTracks().get(i-1);
                         if(AudioHandler.isTooLong(track))
                         {
@@ -113,7 +115,7 @@ public class SCSearchCmd extends MusicCommand {
             {
                 AudioTrack track = playlist.getTracks().get(i);
                 builder.addChoices("`["+FormatUtil.formatTime(track.getDuration())+"]` [**"
-                        +track.getInfo().title+"**]("+track.getInfo().uri+")");
+                        +track.getInfo().title+"**](https://youtu.be/"+track.getIdentifier()+")");
             }
             builder.build().display(m);
         }

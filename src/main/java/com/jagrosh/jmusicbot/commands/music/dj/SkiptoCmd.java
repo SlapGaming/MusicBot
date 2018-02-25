@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
-import net.dv8tion.jda.core.entities.User;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkiptoCmd extends MusicCommand {
+public class SkiptoCmd extends AbstractMusicCommand {
 
     public SkiptoCmd(Bot bot)
     {

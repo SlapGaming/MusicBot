@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class VolumeCmd extends MusicCommand {
+public class VolumeCmd extends AbstractMusicCommand {
 
     public VolumeCmd(Bot bot)
     {

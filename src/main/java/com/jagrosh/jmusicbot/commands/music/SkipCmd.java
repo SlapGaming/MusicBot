@@ -24,7 +24,7 @@ import net.dv8tion.jda.core.entities.User;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkipCmd extends MusicCommand {
+public class SkipCmd extends AbstractMusicCommand {
 
     public SkipCmd(Bot bot)
     {
@@ -38,6 +38,7 @@ public class SkipCmd extends MusicCommand {
 
     @Override
     public void doCommand(CommandEvent event) {
+
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(event.getAuthor().getIdLong()==handler.getRequester())
         {

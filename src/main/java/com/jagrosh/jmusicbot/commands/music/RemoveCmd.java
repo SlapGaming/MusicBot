@@ -26,7 +26,7 @@ import net.dv8tion.jda.core.entities.User;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class RemoveCmd extends MusicCommand {
+public class RemoveCmd extends AbstractMusicCommand {
 
     public RemoveCmd(Bot bot)
     {

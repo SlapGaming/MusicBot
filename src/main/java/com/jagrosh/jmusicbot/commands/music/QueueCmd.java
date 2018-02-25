@@ -30,7 +30,7 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class QueueCmd extends MusicCommand {
+public class QueueCmd extends AbstractMusicCommand {
 
     private final Paginator.Builder builder;
     public QueueCmd(Bot bot)

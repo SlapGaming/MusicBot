@@ -13,42 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
+import net.dv8tion.jda.core.entities.User;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class ShuffleCmd extends MusicCommand {
+public class ForceskipCmd extends AbstractMusicCommand {
 
-    public ShuffleCmd(Bot bot)
+    public ForceskipCmd(Bot bot)
     {
         super(bot);
-        this.name = "shuffle";
-        this.help = "shuffles songs you have added";
-        this.beListening = true;
+        this.name = "forceskip";
+        this.help = "skips the current song";
+        this.aliases = new String[]{"modskip"};
         this.bePlaying = true;
+        this.category = bot.DJ;
     }
 
     @Override
     public void doCommand(CommandEvent event) {
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
-        int s = handler.getQueue().shuffle(event.getAuthor().getIdLong());
-        switch (s) {
-            case 0:
-                event.reply(event.getClient().getError()+" You don't have any music in the queue to shuffle!");
-                break;
-            case 1:
-                event.reply(event.getClient().getWarning()+" You only have one song in the queue!");
-                break;
-            default:
-                event.reply(event.getClient().getSuccess()+" You successfully shuffled your "+s+" entries.");
-                break;
-        }
+        User u = event.getJDA().getUserById(handler.getRequester());
+        event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title
+                +"** (requested by "+(u==null ? "someone" : "**"+u.getName()+"**")+")");
+        handler.getPlayer().stopTrack();
     }
     
 }

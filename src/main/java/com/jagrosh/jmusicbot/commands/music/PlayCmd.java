@@ -36,7 +36,7 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PlayCmd extends MusicCommand
+public class PlayCmd extends AbstractMusicCommand
 {
     public final static String LOAD = "\uD83D\uDCE5";
     public final static String CANCEL = "\uD83D\uDEAB";
@@ -205,7 +205,7 @@ public class PlayCmd extends MusicCommand
         }
     }
     
-    public class PlaylistCmd extends MusicCommand {
+    public class PlaylistCmd extends AbstractMusicCommand {
 
         public PlaylistCmd(Bot bot)
         {

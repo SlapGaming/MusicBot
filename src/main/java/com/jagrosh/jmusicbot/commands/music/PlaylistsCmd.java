@@ -24,7 +24,7 @@ import com.jagrosh.jmusicbot.playlist.Playlist;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PlaylistsCmd extends MusicCommand {
+public class PlaylistsCmd extends AbstractMusicCommand {
 
     public PlaylistsCmd(Bot bot)
     {

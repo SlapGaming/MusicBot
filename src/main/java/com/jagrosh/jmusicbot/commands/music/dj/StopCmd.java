@@ -13,31 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
-import com.jagrosh.jmusicbot.utils.FormatUtil;
-import net.dv8tion.jda.core.Permission;
+import com.jagrosh.jmusicbot.audio.AudioHandler;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class NowplayingCmd extends MusicCommand {
+public class StopCmd extends AbstractMusicCommand {
 
-    public NowplayingCmd(Bot bot)
+    public StopCmd(Bot bot)
     {
         super(bot);
-        this.name = "nowplaying";
-        this.help = "shows the song that is currently playing";
-        this.aliases = new String[]{"np","current"};
-        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+        this.name = "stop";
+        this.help = "stops the current song and clears the queue";
+        this.bePlaying = false;
+        this.category = bot.DJ;
     }
 
     @Override
     public void doCommand(CommandEvent event) {
-        event.reply(FormatUtil.nowPlayingMessage(event.getGuild(), event.getClient().getSuccess()), m->bot.setLastNP(m));
+        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        if(handler!=null)
+            handler.stopAndClear();
+        event.getGuild().getAudioManager().closeAudioConnection();
+        event.reply(event.getClient().getSuccess()+" The player has stopped and the queue has been cleared.");
     }
     
 }
