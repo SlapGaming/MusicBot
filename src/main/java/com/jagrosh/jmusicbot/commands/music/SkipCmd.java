@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 import net.dv8tion.jda.core.entities.User;
 
 /**
@@ -37,7 +38,7 @@ public class SkipCmd extends AbstractMusicCommand {
     }
 
     @Override
-    public void doCommand(CommandEvent event) {
+    public void executeMusicCommand(CommandEvent event) {
 
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         if(event.getAuthor().getIdLong()==handler.getRequester())

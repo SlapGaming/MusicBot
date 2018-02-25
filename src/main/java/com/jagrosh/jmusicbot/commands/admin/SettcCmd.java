@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.admin;
 
 import java.util.List;
 import com.jagrosh.jdautilities.command.Command;
@@ -21,20 +21,20 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.utils.FinderUtil;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetvcCmd extends Command {
+public class SettcCmd extends Command {
 
     private final Bot bot;
-    public SetvcCmd(Bot bot)
+    public SettcCmd(Bot bot)
     {
         this.bot = bot;
-        this.name = "setvc";
-        this.help = "sets the voice channel for playing music";
+        this.name = "settc";
+        this.help = "sets the text channel for music commands";
         this.arguments = "<channel|NONE>";
         this.guildOnly = true;
         this.category = bot.ADMIN;
@@ -44,24 +44,24 @@ public class SetvcCmd extends Command {
     protected void execute(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
-            event.reply(event.getClient().getError()+" Please include a voice channel or NONE");
+            event.reply(event.getClient().getError()+" Please include a text channel or NONE");
         }
         else if(event.getArgs().equalsIgnoreCase("none"))
         {
-            bot.clearVoiceChannel(event.getGuild());
-            event.reply(event.getClient().getSuccess()+" Music can now be played in any channel");
+            bot.clearTextChannel(event.getGuild());
+            event.reply(event.getClient().getSuccess()+" Music commands can now be used in any channel");
         }
         else
         {
-            List<VoiceChannel> list = FinderUtil.findVoiceChannel(event.getArgs(), event.getGuild());
+            List<TextChannel> list = FinderUtil.findTextChannel(event.getArgs(), event.getGuild());
             if(list.isEmpty())
-                event.reply(event.getClient().getWarning()+" No Voice Channels found matching \""+event.getArgs()+"\"");
+                event.reply(event.getClient().getWarning()+" No Text Channels found matching \""+event.getArgs()+"\"");
             else if (list.size()>1)
-                event.reply(event.getClient().getWarning()+FormatUtil.listOfVChannels(list, event.getArgs()));
+                event.reply(event.getClient().getWarning()+FormatUtil.listOfTChannels(list, event.getArgs()));
             else
             {
-                bot.setVoiceChannel(list.get(0));
-                event.reply(event.getClient().getSuccess()+" Music can now only be played in **"+list.get(0).getName()+"**");
+                bot.setTextChannel(list.get(0));
+                event.reply(event.getClient().getSuccess()+" Music commands can now only be used in <#"+list.get(0).getId()+">");
             }
         }
     }

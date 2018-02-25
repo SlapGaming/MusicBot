@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
 import java.util.List;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 import com.jagrosh.jmusicbot.playlist.Playlist;
 
 /**
@@ -38,7 +39,7 @@ public class PlaylistsCmd extends AbstractMusicCommand {
     }
     
     @Override
-    public void doCommand(CommandEvent event) {
+    public void executeMusicCommand(CommandEvent event) {
         if(!Playlist.folderExists())
             Playlist.createFolder();
         if(!Playlist.folderExists())

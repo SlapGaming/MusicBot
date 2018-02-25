@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands;
+package com.jagrosh.jmusicbot.commands.music;
 
+import com.jagrosh.jmusicbot.commands.AbstractMusicCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity;
@@ -57,7 +58,7 @@ public class SearchCmd extends AbstractMusicCommand {
                 ;
     }
     @Override
-    public void doCommand(CommandEvent event) {
+    public void executeMusicCommand(CommandEvent event) {
         if(event.getArgs().isEmpty())
         {
             event.reply(event.getClient().getError()+" Please include a query.");

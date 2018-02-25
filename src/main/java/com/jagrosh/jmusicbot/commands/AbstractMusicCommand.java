@@ -29,13 +29,13 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public abstract class MusicCommand extends Command {
+public abstract class AbstractMusicCommand extends Command {
 
     protected final Bot bot;
     protected boolean bePlaying;
     protected boolean beListening;
     
-    public MusicCommand(Bot bot)
+    public AbstractMusicCommand(Bot bot)
     {
         this.bot = bot;
         this.guildOnly = true;
@@ -46,12 +46,12 @@ public abstract class MusicCommand extends Command {
     protected void execute(CommandEvent event) {
         Settings settings = bot.getSettings(event.getGuild());
         TextChannel tchannel = event.getGuild().getTextChannelById(settings.getTextId());
-        if(tchannel!=null && !event.getTextChannel().equals(tchannel))
-        {
+        if (!bot.ADMIN.test(event) && tchannel != null && !event.getTextChannel().equals(tchannel)) {
             try {
                 event.getMessage().delete().queue();
-            } catch(PermissionException e){}
-            event.replyInDm(event.getClient().getError()+" You can only use that command in <#"+settings.getTextId()+">!");
+            } catch (PermissionException e) {
+            }
+            event.replyInDm(event.getClient().getError() + " You can only use that command in <#" + settings.getTextId() + ">!");
             return;
         }
         if(bePlaying
@@ -82,8 +82,8 @@ public abstract class MusicCommand extends Command {
                     return;
                 }
         }
-        doCommand(event);
+        executeMusicCommand(event);
     }
-    
-    public abstract void doCommand(CommandEvent event);
+
+    public abstract void executeMusicCommand(CommandEvent event);
 }

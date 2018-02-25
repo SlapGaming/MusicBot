@@ -50,3 +50,9 @@ crashlytics-build.properties
 fabric.properties
 
 target/
+
+\.idea/
+
+*.iml
+
+dependency-reduced-pom\.xml

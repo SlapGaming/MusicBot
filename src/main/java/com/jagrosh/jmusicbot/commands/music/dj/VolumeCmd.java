@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.music;
+package com.jagrosh.jmusicbot.commands.music.dj;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
@@ -38,7 +38,7 @@ public class VolumeCmd extends AbstractMusicCommand {
     }
 
     @Override
-    public void doCommand(CommandEvent event) {
+    public void executeMusicCommand(CommandEvent event) {
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         int volume = handler==null && bot.getSettings(event.getGuild())==null ? 100 : (handler==null ? bot.getSettings(event.getGuild()).getVolume() : handler.getPlayer().getVolume());
         if(event.getArgs().isEmpty())
