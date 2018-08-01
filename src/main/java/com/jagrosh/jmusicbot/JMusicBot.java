@@ -119,7 +119,7 @@ public class JMusicBot {
 
 
                         // Misc commands
-                        new TeamsCmd()
+                        new TeamsCmd(bot)
                 );
         if(config.useEval())
             cb.addCommand(new EvalCmd(bot));
