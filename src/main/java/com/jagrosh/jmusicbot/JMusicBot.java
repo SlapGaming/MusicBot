@@ -23,6 +23,7 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.*;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.admin.*;
+import com.jagrosh.jmusicbot.commands.misc.TeamsCmd;
 import com.jagrosh.jmusicbot.commands.music.admin.AutoplaylistCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.music.admin.PlaylistCmd;
@@ -63,7 +64,7 @@ public class JMusicBot {
         Bot bot = new Bot(waiter, config);
         
         AboutCommand ab = new AboutCommand(Color.BLUE.brighter(),
-                                "a music bot that is [easy to host yourself!](https://github.com/jagrosh/MusicBot) (v0.1.3)",
+                                "a music bot that is [easy to host yourself!](https://github.com/Telluur/MusicBot) (v0.1.3.t2)",
                                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                                 RECOMMENDED_PERMS);
         ab.setIsAuthor(false);
@@ -85,7 +86,7 @@ public class JMusicBot {
                         ab,
                         new PingCommand(),
                         new SettingsCmd(bot),
-                        
+
                         new NowplayingCmd(bot),
                         new PlayCmd(bot, config.getLoading()),
                         new PlaylistsCmd(bot),
@@ -95,18 +96,18 @@ public class JMusicBot {
                         new SCSearchCmd(bot, config.getSearching()),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
-                        
+
                         new ForceskipCmd(bot),
                         new PauseCmd(bot),
                         new RepeatCmd(bot),
                         new SkiptoCmd(bot),
                         new StopCmd(bot),
                         new VolumeCmd(bot),
-                        
+
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
-                        
+
                         //new GuildlistCommand(waiter),
                         new AutoplaylistCmd(bot),
                         new PlaylistCmd(bot),
@@ -114,7 +115,11 @@ public class JMusicBot {
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
-                        new ShutdownCmd(bot)
+                        new ShutdownCmd(bot),
+
+
+                        // Misc commands
+                        new TeamsCmd(bot)
                 );
         if(config.useEval())
             cb.addCommand(new EvalCmd(bot));
