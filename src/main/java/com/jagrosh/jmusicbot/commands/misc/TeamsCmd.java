@@ -32,6 +32,11 @@ public class TeamsCmd extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        //Check if user is in a voice channel
+        if (!event.getMember().getVoiceState().inVoiceChannel()){
+            event.replyError("You must be in a voice channel to use this command.");
+            return;
+        }
 
         //Check if sufficient arguments are supplied
         if ("".equals(event.getArgs())) {
