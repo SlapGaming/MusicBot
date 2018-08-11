@@ -47,23 +47,14 @@ public class OtherUtil
     
     public static String getLatestVersion()
     {
-        try
-        {
-            Response response = new OkHttpClient.Builder().build()
-                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/jagrosh/MusicBot/releases/latest").build())
-                    .execute();
-            try(Reader reader = response.body().charStream())
-            {
-                JSONObject obj = new JSONObject(new JSONTokener(reader));
-                return obj.getString("tag_name");
-            }
-            finally
-            {
-                response.close();
-            }
-        }
-        catch(IOException | JSONException | NullPointerException ex)
-        {
+        try (Response response = new OkHttpClient.Builder().build()
+                .newCall(new Request.Builder().get().url("https://api.github.com/repos/jagrosh/MusicBot/releases/latest").build())
+                .execute()) {
+            Reader reader = response.body().charStream();
+            JSONObject obj = new JSONObject(new JSONTokener(reader));
+            return obj.getString("tag_name");
+
+        } catch (IOException | JSONException | NullPointerException ex) {
             return null;
         }
     }
