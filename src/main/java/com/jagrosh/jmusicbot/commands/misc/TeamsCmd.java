@@ -33,7 +33,7 @@ public class TeamsCmd extends Command {
     @Override
     protected void execute(CommandEvent event) {
         //Check if user is in a voice channel
-        if (!event.getMember().getVoiceState().inVoiceChannel()){
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
             event.replyError("You must be in a voice channel to use this command.");
             return;
         }
@@ -56,7 +56,7 @@ public class TeamsCmd extends Command {
         }
 
         if (numberOfTeams < 2) {
-            event.replyError("Number of teams should be ≥ 2");
+            event.replyError("This is a __teams__ command. No worries though, for people like you we've added this helpful error message: Number of teams should be ≥ 2");
             return;
         } else if (numberOfTeams > 9) {
             event.replyError("Number of teams should be ≤ 9");
@@ -76,19 +76,30 @@ public class TeamsCmd extends Command {
                 .collect(Collectors.toList());
 
         if (numberOfTeams > pool.size()) {
-            event.replyError("Number of teams is larger than available participants.");
+            event.replyError("Good job, you're trying to generate more teams than the number of participants available. You must have done well at school.");
             return;
         }
 
+        showMessage(event, numberOfTeams, pool, 0);
+    }
+
+    private void showMessage(CommandEvent event, int numberOfTeams, List<String> pool, int shuffles) {
         Consumer<Message> callback = m -> new EmbeddedButtonMenu.Builder()
-                .setMessageEmbed(createMessageEmbedTeams(numberOfTeams, pool, true))
+                .setMessageEmbed(createMessageEmbedTeams(numberOfTeams, pool))
                 .setChoices(SHUFFLE)
                 .setTimeout(30, TimeUnit.SECONDS)
                 .setEventWaiter(bot.getWaiter())
                 .setAction(re -> {
                     switch (re.getName()) {
                         case SHUFFLE:
-                            m.editMessage(createMessageEmbedTeams(numberOfTeams, pool, false)).queue();
+                            m.delete().queue();
+                            if (shuffles == 5) {
+                                event.replyWarning("How often are you going to bash that shuffle button, hmm?");
+                            } else if (shuffles == 6) {
+                                event.replyError("I've had enough of your shit. Make your own teams.");
+                                break;
+                            }
+                            showMessage(event, numberOfTeams, pool, shuffles + 1);
                             break;
                     }
                 })
@@ -96,6 +107,7 @@ public class TeamsCmd extends Command {
                 {
                     try {
                         a.clearReactions().queue();
+
                     } catch (PermissionException ignored) {
                     }
                 })
@@ -106,9 +118,10 @@ public class TeamsCmd extends Command {
                 .setColor(Color.GREEN)
                 .addField("", "Generating...", false)
                 .build(), callback);
+
     }
 
-    private MessageEmbed createMessageEmbedTeams(int numberOfTeams, List<String> stringPool, boolean shuffleMessage) {
+    private MessageEmbed createMessageEmbedTeams(int numberOfTeams, List<String> stringPool) {
         //Create the team objects
         List<List<String>> teams = new LinkedList<>();
         for (int i = 0; i < numberOfTeams; i++) {
@@ -133,12 +146,8 @@ public class TeamsCmd extends Command {
             eb.addField("Team " + teamNo++, String.join("\r\n", team), true);
         }
 
-        if (shuffleMessage) {
-            eb.setFooter(String.format("Click %s to shuffle the teams", SHUFFLE), "https://cdn.discordapp.com/embed/avatars/2.png");
-        }
+        eb.setFooter(String.format("Click %s to shuffle the teams", SHUFFLE), "https://cdn.discordapp.com/embed/avatars/2.png");
 
         return eb.build();
     }
-
-
 }
