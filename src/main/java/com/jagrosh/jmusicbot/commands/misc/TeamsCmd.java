@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 
 import java.awt.*;
 import java.util.*;
@@ -57,7 +56,7 @@ public class TeamsCmd extends Command {
         }
 
         if (numberOfTeams < 2) {
-            event.replyError("Number of teams should be ≥ 2");
+            event.replyError("This is a __teams__ command. No worries though, for people like you we've added this helpful error message: Number of teams should be ≥ 2");
             return;
         } else if (numberOfTeams > 9) {
             event.replyError("Number of teams should be ≤ 9");
@@ -77,14 +76,14 @@ public class TeamsCmd extends Command {
                 .collect(Collectors.toList());
 
         if (numberOfTeams > pool.size()) {
-            event.replyError("Number of teams is larger than available participants.");
+            event.replyError("Good job, you're trying to generate more teams than the number of participants available. You must have done well at school.");
             return;
         }
 
-        showMessage(event, numberOfTeams, pool);
+        showMessage(event, numberOfTeams, pool, 0);
     }
 
-    private void showMessage(CommandEvent event, int numberOfTeams, List<String> pool) {
+    private void showMessage(CommandEvent event, int numberOfTeams, List<String> pool, int shuffles) {
         Consumer<Message> callback = m -> new EmbeddedButtonMenu.Builder()
                 .setMessageEmbed(createMessageEmbedTeams(numberOfTeams, pool))
                 .setChoices(SHUFFLE)
@@ -94,7 +93,13 @@ public class TeamsCmd extends Command {
                     switch (re.getName()) {
                         case SHUFFLE:
                             m.delete().queue();
-                            showMessage(event, numberOfTeams, pool);
+                            if (shuffles == 5) {
+                                event.replyWarning("How often are you going to bash that shuffle button, hmm?");
+                            } else if (shuffles == 6) {
+                                event.replyError("I've had enough of your shit. Make your own teams.");
+                                break;
+                            }
+                            showMessage(event, numberOfTeams, pool, shuffles + 1);
                             break;
                     }
                 })
@@ -105,7 +110,6 @@ public class TeamsCmd extends Command {
 
                     } catch (PermissionException ignored) {
                     }
-                    //TODO: edit message -> remove shuffle text
                 })
                 .build().display(m);
 
