@@ -33,9 +33,9 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
+import com.jagrosh.jmusicbot.utils.Pair;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import java.util.Objects;
-import javafx.util.Pair;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
@@ -49,7 +49,7 @@ import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ShutdownEvent;
 import net.dv8tion.jda.core.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.json.JSONException;
@@ -187,7 +187,7 @@ public class Bot extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageDelete(MessageDeleteEvent event) {
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         if(lastNP.containsKey(event.getGuild().getIdLong()))
         {
             Pair<Long,Long> pair = lastNP.get(event.getGuild().getIdLong());
@@ -242,10 +242,12 @@ public class Bot extends ListenerAdapter {
         }
     }
 
-    public void shutdown(){
+    public void shutdown()
+    {
         manager.shutdown();
         threadpool.shutdownNow();
-        jda.getGuilds().stream().forEach(g -> {
+        jda.getGuilds().stream().forEach(g -> 
+        {
             g.getAudioManager().closeAudioConnection();
             AudioHandler ah = (AudioHandler)g.getAudioManager().getSendingHandler();
             if(ah!=null)
@@ -264,13 +266,15 @@ public class Bot extends ListenerAdapter {
     }
     
     @Override
-    public void onShutdown(ShutdownEvent event) {
+    public void onShutdown(ShutdownEvent event) 
+    {
         if(gui!=null)
             gui.dispose();
     }
 
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(ReadyEvent event) 
+    {
         this.jda = event.getJDA();
         if(jda.getGuilds().isEmpty())
         {
@@ -279,7 +283,8 @@ public class Bot extends ListenerAdapter {
             log.warn(event.getJDA().asBot().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
         credit(event.getJDA());
-        jda.getGuilds().forEach((guild) -> {
+        jda.getGuilds().forEach((guild) -> 
+        {
             try
             {
                 String defpl = getSettings(guild).getDefaultPlaylist();
@@ -295,7 +300,8 @@ public class Bot extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) {
+    public void onGuildJoin(GuildJoinEvent event) 
+    {
         credit(event.getJDA());
     }
     

@@ -57,7 +57,7 @@ public class PlayCmd extends AbstractMusicCommand
 
     @Override
     public void executeMusicCommand(CommandEvent event) {
-        if(event.getArgs().isEmpty())
+        if(event.getArgs().isEmpty() && event.getMessage().getAttachments().isEmpty())
         {
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             if(handler!=null && handler.getPlayer().getPlayingTrack()!=null && handler.getPlayer().isPaused())
@@ -86,7 +86,7 @@ public class PlayCmd extends AbstractMusicCommand
         }
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">") 
                 ? event.getArgs().substring(1,event.getArgs().length()-1) 
-                : event.getArgs();
+                : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
         event.reply(loadingEmoji+" Loading... `["+args+"]`", m -> bot.getAudioManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
     }
     
