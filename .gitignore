@@ -56,3 +56,7 @@ target/
 *.iml
 
 dependency-reduced-pom\.xml
+
+config\.txt
+
+serversettings\.json

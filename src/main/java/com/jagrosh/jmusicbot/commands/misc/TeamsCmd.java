@@ -46,6 +46,7 @@ public class TeamsCmd extends Command {
 
         String[] args = event.getArgs().split("\\s+");
 
+
         int numberOfTeams;
         //Try to parse first argument and check team bounds
         try {
@@ -67,7 +68,9 @@ public class TeamsCmd extends Command {
         List<Member> vcMembers = event.getGuild().getMember(event.getAuthor()).getVoiceState().getChannel().getMembers();
 
         //Assume the second+ argument is a mentioned user.
-        List<String> mentions = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
+        List<String> mentions = Arrays.stream(Arrays.copyOfRange(args, 1, args.length))
+                .map(m -> m.replaceAll("!", ""))//Discord is sheit and adds ! to user ID's when nicknamed
+                .collect(Collectors.toList());
 
         //Prepare the stringified user pool
         List<String> pool = vcMembers.stream()
