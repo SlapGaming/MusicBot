@@ -56,7 +56,7 @@ public class JMusicBot
     public static void main(String[] args)
     {
         // check run mode(s)
-        boolean nogui = false;
+        boolean nogui = true;
         for(String arg: args)
             if("-nogui".equalsIgnoreCase(arg))
                 nogui = true;
