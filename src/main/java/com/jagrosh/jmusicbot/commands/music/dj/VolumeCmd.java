@@ -34,7 +34,7 @@ public class VolumeCmd extends AbstractMusicCommand {
         this.aliases = new String[]{"vol"};
         this.help = "sets or shows volume";
         this.arguments = "[0-150]";
-        this.category = bot.DJ;
+        //this.category = bot.DJ;
     }
 
     @Override

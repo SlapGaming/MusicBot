@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class TeamsCmd extends Command {
 
     private final static String SHUFFLE = "\uD83D\uDD04";
+    private final static String SLAP_LOGO = "https://telluur.com/img/slaplogoemoji.jpg";
     private Bot bot;
 
     public TeamsCmd(Bot bot) {
@@ -149,7 +150,7 @@ public class TeamsCmd extends Command {
             eb.addField("Team " + teamNo++, String.join("\r\n", team), true);
         }
 
-        eb.setFooter(String.format("Click %s to shuffle the teams", SHUFFLE), "https://cdn.discordapp.com/embed/avatars/2.png");
+        eb.setFooter(String.format("Click %s to shuffle the teams", SHUFFLE), SLAP_LOGO);
 
         return eb.build();
     }
