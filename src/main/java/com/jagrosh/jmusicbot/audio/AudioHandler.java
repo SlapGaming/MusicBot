@@ -179,6 +179,17 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
                         return false;
                     }
 
+                    //Check if member is in VC
+                    if (!event.getMember().getVoiceState().inVoiceChannel()) {
+                        return false;
+                    }
+
+                    //Check if VC contains the bot
+                    if (event.getMember().getVoiceState().getChannel().getMembers().stream()
+                            .noneMatch(member -> member.equals(bot.getJDA().getGuildById(guildId).getSelfMember()))) {
+                        return false;
+                    }
+
                     // If the message is not the same as the ButtonMenu
                     // currently being displayed.
                     if (!event.getMessageId().equals(trackAdvanceMessage.getId())) {
