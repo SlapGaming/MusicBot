@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class TeamsCmd extends Command {
@@ -73,10 +75,9 @@ public class TeamsCmd extends Command {
                 .map(m -> m.replaceAll("!", ""))//Discord is sheit and adds ! to user ID's when nicknamed
                 .collect(Collectors.toList());
 
-        //Prepare the stringified user pool
-        List<String> pool = vcMembers.stream()
+        //Filter out the mentions
+        List<Member> pool = vcMembers.stream()
                 .filter(member -> !member.getUser().isBot() && !mentions.contains(member.getUser().getAsMention())) //Filter out bots/mentioned users
-                .map(Member::getEffectiveName) //Convert to nicknames
                 .collect(Collectors.toList());
 
         if (numberOfTeams > pool.size()) {
@@ -87,12 +88,13 @@ public class TeamsCmd extends Command {
         showMessage(event, numberOfTeams, pool, 0);
     }
 
-    private void showMessage(CommandEvent event, int numberOfTeams, List<String> pool, int shuffles) {
+    private void showMessage(CommandEvent event, int numberOfTeams, List<Member> pool, int shuffles) {
         Consumer<Message> callback = m -> new EmbeddedButtonMenu.Builder()
                 .setMessageEmbed(createMessageEmbedTeams(numberOfTeams, pool))
                 .setChoices(SHUFFLE)
                 .setTimeout(30, TimeUnit.SECONDS)
                 .setEventWaiter(bot.getWaiter())
+                .setUsers(pool.stream().map(Member::getUser).toArray(User[]::new))
                 .setAction(re -> {
                     switch (re.getName()) {
                         case SHUFFLE:
@@ -125,7 +127,7 @@ public class TeamsCmd extends Command {
 
     }
 
-    private MessageEmbed createMessageEmbedTeams(int numberOfTeams, List<String> stringPool) {
+    private MessageEmbed createMessageEmbedTeams(int numberOfTeams, List<Member> memberPool) {
         //Create the team objects
         List<List<String>> teams = new LinkedList<>();
         for (int i = 0; i < numberOfTeams; i++) {
@@ -133,10 +135,11 @@ public class TeamsCmd extends Command {
         }
 
         //Randomize the teams by shuffling the pool, and then filling the teams.
-        Collections.shuffle(stringPool);
+
+        Collections.shuffle(memberPool);
         int assign = 0;
-        for (String teamMate : stringPool) {
-            teams.get(assign).add(teamMate);
+        for (Member teamMate : memberPool) {
+            teams.get(assign).add(teamMate.getEffectiveName());
             assign = (assign + 1) % numberOfTeams;
         }
 
