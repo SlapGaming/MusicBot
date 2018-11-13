@@ -179,6 +179,12 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
                         return false;
                     }
 
+                    //only allow DJ roles to press the buttons.
+                    if (event.getMember().getRoles().stream().noneMatch(role -> role.getIdLong() == bot.getSettings(guildId).getRoleId())) {
+                        return false;
+                    }
+
+
                     //Check if member is in VC
                     if (!event.getMember().getVoiceState().inVoiceChannel()) {
                         return false;
