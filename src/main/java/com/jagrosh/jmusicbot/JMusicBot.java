@@ -145,6 +145,8 @@ public class JMusicBot
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
+                        new SetPunRoleCmd(bot),
+                        new SetPunvcCmd(bot),
 
                         //new GuildlistCommand(waiter),
                         new AutoplaylistCmd(bot),
