@@ -180,7 +180,8 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
                     }
 
                     //only allow DJ roles to press the buttons.
-                    if (event.getMember().getRoles().stream().noneMatch(role -> role.getIdLong() == bot.getSettings(guildId).getRoleId())) {
+                    Guild guild = bot.getJDA().getGuildById(guildId);
+                    if (event.getMember().getRoles().stream().noneMatch(role -> role.getIdLong() == bot.getSettings(guild).getRoleId())) {
                         return false;
                     }
 
