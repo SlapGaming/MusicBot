@@ -19,6 +19,33 @@ public class PunHandler {
         this.bot = bot;
     }
 
+    public void canPunish(CommandEvent event, Punishment punishment) throws PunException {
+        getPunishedIfValidPunishment(event, punishment);
+    }
+
+    private List<Member> getPunishedIfValidPunishment(CommandEvent event, Punishment punishment) throws PunException {
+        Guild guild = event.getGuild();
+        Member punMember = punishment.getPunMember();
+        List<Member> punished;
+        if (punishedGuilds.containsKey(guild)) {
+            punished = punishedGuilds.get(guild);
+
+            //check if member is already punished
+            if (punished.contains(punMember)) {
+                throw new PunException(punMember.getAsMention() + " is already punished.");
+            }
+
+            //check if caller is being punished
+            if (punished.contains(event.getMember())) {
+                throw new PunException(event.getMember() + " is a bit salty and tried to punish while being punished. BAD BOI.");
+            }
+        } else {
+            punished = new ArrayList<>();
+            punishedGuilds.put(guild, punished);
+        }
+        return punished;
+    }
+
 
     public void punish(CommandEvent event, Punishment punishment) throws PunException {
         Member punMember = punishment.getPunMember();
@@ -37,24 +64,7 @@ public class PunHandler {
         }
 
         //fetch punished members of guild, create if doesn't exist yet
-        List<Member> punished;
-        if (punishedGuilds.containsKey(guild)) {
-            punished = punishedGuilds.get(guild);
-
-            //check if member is already punished
-            if (punished.contains(punMember)) {
-                throw new PunException(punMember.getAsMention() + " is already punished.");
-            }
-
-            //check if caller is being punished
-            if (punished.contains(event.getMember())) {
-                throw new PunException(event.getMember() + " is a bit salty and tried to punish while being punished. BAD BOI.");
-            }
-        } else {
-            punished = new ArrayList<>();
-            punishedGuilds.put(guild, punished);
-        }
-
+        List<Member> punished = getPunishedIfValidPunishment(event, punishment);
 
         GuildController gc = guild.getController();
         Role punRole = guild.getRoleById(punRoleId);
@@ -80,6 +90,8 @@ public class PunHandler {
             punished.remove(punMember);
         };
         executor.schedule(unpunish, timeout, TimeUnit.SECONDS);
+        event.replySuccess(punMember.getAsMention() + " has been punished for " + timeout + " seconds.");
     }
+
 
 }
