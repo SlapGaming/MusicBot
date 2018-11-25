@@ -18,13 +18,16 @@ public class ForcePunCmd extends AbstractPunCmd {
         this.help = "pun-ish a user without vote. ";
         this.arguments = "<@user> <?seconds=30>";
         this.guildOnly = true;
-        this.category = bot.ADMIN;
+
+        //TODO, set to admin once vote is implemented.
+        this.category = bot.DJ;
     }
 
     @Override
     protected void execute(CommandEvent event) {
         try {
             Punishment punishment = parseArguments(event);
+            checkTimeoutBounds(event, punishment);
             event.reply("Forcing pun-ishment...");
             punHandler.punish(event, punishment);
         } catch (PunException e) {

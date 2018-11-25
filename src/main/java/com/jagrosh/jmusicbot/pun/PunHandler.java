@@ -2,6 +2,8 @@ package com.jagrosh.jmusicbot.pun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
+import com.jagrosh.jmusicbot.utils.RoleUtils;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.managers.GuildController;
 
@@ -17,6 +19,11 @@ public class PunHandler {
 
     public PunHandler(Bot bot) {
         this.bot = bot;
+        forceUnpunish();
+    }
+
+    private void forceUnpunish(){
+        //TODO Implement a clear role of all channels on bot startup.
     }
 
     public void canPunish(CommandEvent event, Punishment punishment) throws PunException {
@@ -70,19 +77,29 @@ public class PunHandler {
         Role punRole = guild.getRoleById(punRoleId);
         VoiceChannel punVC = guild.getVoiceChannelById(punVCId);
         VoiceChannel origin = punMember.getVoiceState().getChannel();
+        final boolean punRolable = !RoleUtils.hasHigherRoleThanBot(punMember);
+
+        if (punRolable){
+            System.out.println(punMember.getAsMention() + " has higher role than bot.");
+        }
+
 
         //Add role and move user if still in voice.
         punished.add(punMember);
-        gc.addSingleRoleToMember(punMember, punRole).complete();
+        if (punRolable) {
+            gc.addSingleRoleToMember(punMember, punRole).complete();
+        }
         if (punMember.getVoiceState().inVoiceChannel()) {
             gc.moveVoiceMember(punMember, punVC).complete();
         }
 
-
         //Start Async task for moving the user back/removing pun role
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         Runnable unpunish = () -> {
-            gc.removeSingleRoleFromMember(punMember, punRole).complete();
+            if (punRolable) {
+                gc.removeSingleRoleFromMember(punMember, punRole).complete();
+            }
+
             //check if user has left voice
             if (punMember.getVoiceState().inVoiceChannel()) {
                 gc.moveVoiceMember(punMember, origin).complete();
@@ -90,7 +107,7 @@ public class PunHandler {
             punished.remove(punMember);
         };
         executor.schedule(unpunish, timeout, TimeUnit.SECONDS);
-        event.replySuccess(punMember.getAsMention() + " has been punished for " + timeout + " seconds.");
+        event.reply(punMember.getAsMention() + " has been punished for " + timeout + " seconds.");
     }
 
 
