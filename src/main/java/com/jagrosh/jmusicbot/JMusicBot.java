@@ -30,6 +30,7 @@ import com.jagrosh.jmusicbot.commands.music.admin.PlaylistCmd;
 import com.jagrosh.jmusicbot.commands.music.admin.RepeatCmd;
 import com.jagrosh.jmusicbot.commands.music.dj.*;
 import com.jagrosh.jmusicbot.gui.GUI;
+import com.jagrosh.jmusicbot.pun.PunHandler;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import javax.swing.JOptionPane;
 import net.dv8tion.jda.core.AccountType;
@@ -110,8 +111,11 @@ public class JMusicBot
         AudioHandler.SONG_IN_STATUS = config.getSongInStatus();
         AudioHandler.MAX_SECONDS = config.getMaxSeconds();
         AudioHandler.USE_NP_REFRESH = !config.useNPImages();
+
+        //Init the punHandler
+        PunHandler punHandler = new PunHandler(bot);
+
         // set up the command client
-        
         CommandClientBuilder cb = new CommandClientBuilder()
                 .setPrefix(config.getPrefix())
                 .setAlternativePrefix(config.getAltPrefix())
@@ -145,6 +149,9 @@ public class JMusicBot
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
+                        new SetPunRoleCmd(bot),
+                        new SetPunvcCmd(bot),
+                        new ForcePunCmd(bot, punHandler),
 
                         //new GuildlistCommand(waiter),
                         new AutoplaylistCmd(bot),

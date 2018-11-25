@@ -16,117 +16,127 @@
 package com.jagrosh.jmusicbot;
 
 /**
- *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class Settings {
-    public final static Settings DEFAULT_SETTINGS = new Settings(0, 0, 0, 100, null, false);
-    
+    public final static Settings DEFAULT_SETTINGS = new Settings(0, 0, 0, 100,
+            null, false, 0, 0);
+
     private long textId;
     private long voiceId;
     private long roleId;
     private int volume;
     private String defaultPlaylist;
     private boolean repeatMode;
-    
-    public Settings(String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode)
-    {
-        try
-        {
+    private long punRoleId;
+    private long punVCId;
+
+    public Settings(String textId, String voiceId, String roleId, int volume, String defaultPlaylist,
+                    boolean repeatMode, String punRoleId, String punVCId) {
+        try {
             this.textId = Long.parseLong(textId);
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             this.textId = 0;
         }
-        try
-        {
+        try {
             this.voiceId = Long.parseLong(voiceId);
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             this.voiceId = 0;
         }
-        try
-        {
+        try {
             this.roleId = Long.parseLong(roleId);
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             this.roleId = 0;
         }
+        try {
+            this.punRoleId = Long.parseLong(punRoleId);
+        } catch (NumberFormatException e) {
+            this.punRoleId = 0;
+        }
+        try {
+            this.punVCId = Long.parseLong(punVCId);
+        } catch (NumberFormatException e) {
+            this.punVCId = 0;
+        }
+
         this.volume = volume;
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
     }
-    
-    public Settings(long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode)
-    {
+
+    public Settings(long textId, long voiceId, long roleId, int volume, String defaultPlaylist,
+                    boolean repeatMode, long punRoleId, long punVCId) {
         this.textId = textId;
         this.voiceId = voiceId;
         this.roleId = roleId;
         this.volume = volume;
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
+        this.punRoleId = punRoleId;
+        this.punVCId = punVCId;
     }
-    
-    public long getTextId()
-    {
+
+    public long getTextId() {
         return textId;
     }
-    
-    public long getVoiceId()
-    {
+
+    public long getVoiceId() {
         return voiceId;
     }
-    
-    public long getRoleId()
-    {
+
+    public long getRoleId() {
         return roleId;
     }
-    
-    public int getVolume()
-    {
+
+    public int getVolume() {
         return volume;
     }
-    
-    public String getDefaultPlaylist()
-    {
+
+    public String getDefaultPlaylist() {
         return defaultPlaylist;
     }
-    
-    public boolean getRepeatMode()
-    {
+
+    public boolean getRepeatMode() {
         return repeatMode;
     }
-    
-    public void setTextId(long id)
-    {
+
+    public long getPunRoleId() {
+        return punRoleId;
+    }
+
+    public long getPunVCId() {
+        return punVCId;
+    }
+
+    public void setTextId(long id) {
         this.textId = id;
     }
-    
-    public void setVoiceId(long id)
-    {
+
+    public void setVoiceId(long id) {
         this.voiceId = id;
     }
-    
-    public void setRoleId(long id)
-    {
+
+    public void setRoleId(long id) {
         this.roleId = id;
     }
-    
-    public void setVolume(int volume)
-    {
+
+    public void setVolume(int volume) {
         this.volume = volume;
     }
-    
-    public void setDefaultPlaylist(String defaultPlaylist)
-    {
+
+    public void setDefaultPlaylist(String defaultPlaylist) {
         this.defaultPlaylist = defaultPlaylist;
     }
-    
-    public void setRepeatMode(boolean mode)
-    {
+
+    public void setRepeatMode(boolean mode) {
         this.repeatMode = mode;
+    }
+
+    public void setPunRoleId(long id) {
+        this.punRoleId = id;
+    }
+
+    public void setPunVCId(long id) {
+        this.punVCId = id;
     }
 }

@@ -30,6 +30,7 @@ public class TeamsCmd extends Command {
         this.name = "teams";
         this.help = "creates random teams from users in VC";
         this.arguments = "<number of teams> [excluded @mentioned users]";
+        this.guildOnly = true;
     }
 
 
