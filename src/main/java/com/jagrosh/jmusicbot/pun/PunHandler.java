@@ -3,7 +3,6 @@ package com.jagrosh.jmusicbot.pun;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.utils.RoleUtils;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.managers.GuildController;
 
@@ -22,7 +21,7 @@ public class PunHandler {
         forceUnpunish();
     }
 
-    private void forceUnpunish(){
+    private void forceUnpunish() {
         //TODO Implement a clear role of all channels on bot startup.
     }
 
@@ -44,7 +43,7 @@ public class PunHandler {
 
             //check if caller is being punished
             if (punished.contains(event.getMember())) {
-                throw new PunException(event.getMember() + " is a bit salty and tried to punish while being punished. BAD BOI.");
+                throw new PunException(event.getMember().getAsMention() + " is a bit salty and tried to punish while being punished. BAD BOI.");
             }
         } else {
             punished = new ArrayList<>();
@@ -79,7 +78,7 @@ public class PunHandler {
         VoiceChannel origin = punMember.getVoiceState().getChannel();
         final boolean punRolable = !RoleUtils.hasHigherRoleThanBot(punMember);
 
-        if (punRolable){
+        if (punRolable) {
             System.out.println(punMember.getAsMention() + " has higher role than bot.");
         }
 

@@ -40,6 +40,12 @@ public abstract class AbstractPunCmd extends Command {
             throw new PunException("First argument should be <@user> in voice channel");
         }
 
+        //If a user tries to punish a bot, punish them instead.
+        if(punMember.getUser().isBot()){
+            event.reply(event.getSelfMember().getAsMention() + " uses reflect. It's super effective.");
+            punMember = event.getMember();
+        }
+
         int timeout = 30;
         if (args.length > 1) {
             //Try to parse first argument and check team bounds
@@ -60,7 +66,7 @@ public abstract class AbstractPunCmd extends Command {
         if (timeout < 10) {
             throw new PunException("The Discord gods will tickle you in inappropriate places if you spam their API. Minimal timeout 10 seconds.");
         } else if (timeout > 300) {
-            throw new PunException(event.getAuthor().getAsMention() + ", you're being a real asshole, pall. Trying to timeout someone for over 5 minutes.");
+            throw new PunException(event.getAuthor().getAsMention() + ", you twat. Trying to timeout someone for over 5 minutes.");
         }
     }
 
