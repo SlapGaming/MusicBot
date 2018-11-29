@@ -99,8 +99,8 @@ public class PunHandler {
                 gc.removeSingleRoleFromMember(punMember, punRole).complete();
             }
 
-            //check if user has left voice
-            if (punMember.getVoiceState().inVoiceChannel()) {
+            //check if user has left voice, or has already been moved to origin.
+            if (punMember.getVoiceState().inVoiceChannel() && !punMember.getVoiceState().getChannel().equals(origin)) {
                 gc.moveVoiceMember(punMember, origin).complete();
             }
             punished.remove(punMember);

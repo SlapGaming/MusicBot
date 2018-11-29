@@ -40,12 +40,6 @@ public abstract class AbstractPunCmd extends Command {
             throw new PunException("First argument should be <@user> in voice channel");
         }
 
-        //If a user tries to punish a bot, punish them instead.
-        if(punMember.getUser().isBot()){
-            event.reply(event.getSelfMember().getAsMention() + " uses reflect. It's super effective.");
-            punMember = event.getMember();
-        }
-
         int timeout = 30;
         if (args.length > 1) {
             //Try to parse first argument and check team bounds
@@ -55,6 +49,12 @@ public abstract class AbstractPunCmd extends Command {
                 throw new PunException("Second argument should be a number.", e);
             }
 
+        }
+
+        //If a user tries to punish a bot, punish them instead.
+        if(punMember.getUser().isBot()){
+            event.reply(event.getSelfMember().getAsMention() + " uses reflect. It's super effective.");
+            punMember = event.getMember();
         }
 
         return new Punishment(punMember, timeout);
