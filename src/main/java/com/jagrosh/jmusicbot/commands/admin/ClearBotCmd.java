@@ -66,9 +66,10 @@ public class ClearBotCmd extends Command {
 
                         if (targetMessages.size() > 0) {
                             event.replyInDm(EmojiParser.parseToUnicode("Queued " + targetMessages.size() + " for deletion :wastebasket:"));
+                            targetMessages.forEach(message -> message.delete().queue(null, t -> event.replyInDm("Failed to delete a message...")));
                         } else {
                             event.replyInDm(EmojiParser.parseToUnicode("Could not find any commands/replies to delete. :shrug:"));
-                            targetMessages.forEach(message -> message.delete().queue());
+
                         }
                     }
                 })
