@@ -51,6 +51,12 @@ public abstract class AbstractPunCmd extends Command {
 
         }
 
+        //If a user tries to punish a bot, punish them instead.
+        if(punMember.getUser().isBot()){
+            event.reply(event.getSelfMember().getAsMention() + " uses reflect. It's super effective.");
+            punMember = event.getMember();
+        }
+
         return new Punishment(punMember, timeout);
     }
 
@@ -60,7 +66,7 @@ public abstract class AbstractPunCmd extends Command {
         if (timeout < 10) {
             throw new PunException("The Discord gods will tickle you in inappropriate places if you spam their API. Minimal timeout 10 seconds.");
         } else if (timeout > 300) {
-            throw new PunException(event.getAuthor().getAsMention() + ", you're being a real asshole, pall. Trying to timeout someone for over 5 minutes.");
+            throw new PunException(event.getAuthor().getAsMention() + ", you twat. Trying to timeout someone for over 5 minutes.");
         }
     }
 
