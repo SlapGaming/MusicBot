@@ -10,12 +10,12 @@ import net.dv8tion.jda.core.entities.Message;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClearBotCmd extends Command {
+public class ClearBotChatCmd extends Command {
 
     private Config config;
     private Bot bot;
 
-    public ClearBotCmd(Bot bot, Config config) {
+    public ClearBotChatCmd(Bot bot, Config config) {
         this.name = "clear";
         this.aliases = new String[]{"c"};
         this.help = "clear the commands and replies in a text channel by checking the previous <?messages=25> messages.";
