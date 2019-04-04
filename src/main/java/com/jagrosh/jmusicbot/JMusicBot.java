@@ -22,6 +22,7 @@ import com.jagrosh.jdautilities.examples.command.*;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.general.*;
+import com.jagrosh.jmusicbot.commands.misc.TeamsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
@@ -32,6 +33,7 @@ import com.jagrosh.jmusicbot.utils.OtherUtil;
 import java.awt.Color;
 import javax.security.auth.login.LoginException;
 
+import com.vdurmont.emoji.EmojiParser;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import org.slf4j.Logger;
@@ -41,9 +43,9 @@ import org.slf4j.LoggerFactory;
  * @author John Grosh (jagrosh)
  */
 public class JMusicBot {
-    public final static String PLAY_EMOJI = "\u25B6"; // ▶
-    public final static String PAUSE_EMOJI = "\u23F8"; // ⏸
-    public final static String STOP_EMOJI = "\u23F9"; // ⏹
+    public final static String PLAY_EMOJI = EmojiParser.parseToUnicode(":arrow_forward:"); // ▶
+    public final static String PAUSE_EMOJI = EmojiParser.parseToUnicode(":pause_button:"); // ⏸
+    public final static String STOP_EMOJI = EmojiParser.parseToUnicode(":stop_button:"); // ⏹
     public final static Permission[] RECOMMENDED_PERMS = new Permission[]{Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
             Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
             Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
@@ -131,7 +133,9 @@ public class JMusicBot {
                         new SetgameCmd(),
                         new SetnameCmd(),
                         new SetstatusCmd(),
-                        new ShutdownCmd(bot)
+                        new ShutdownCmd(bot),
+
+                        new TeamsCmd(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
