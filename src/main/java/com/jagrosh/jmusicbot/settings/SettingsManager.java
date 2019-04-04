@@ -46,7 +46,10 @@ public class SettingsManager implements GuildSettingsManager
                         o.has("dj_role_id")      ? o.getString("dj_role_id")      : null,
                         o.has("volume")          ? o.getInt("volume")             : 100,
                         o.has("default_playlist")? o.getString("default_playlist"): null,
-                        o.has("repeat")          ? o.getBoolean("repeat")         : false));
+                        o.has("repeat")          ? o.getBoolean("repeat")         : false,
+                        o.has("pun_role")        ? o.getString("pun_role")        : null,
+                        o.has("pun_voice")       ? o.getString("pun_voice")       : null
+                        ));
             });
         } catch(IOException | JSONException e) {
             LoggerFactory.getLogger("Settings").warn("Failed to load server settings (this is normal if no settings have been set yet): "+e);
@@ -72,7 +75,7 @@ public class SettingsManager implements GuildSettingsManager
     
     private Settings createDefaultSettings()
     {
-        return new Settings(this, 0, 0, 0, 100, null, false);
+        return new Settings(this, 0, 0, 0, 100, null, false, 0, 0);
     }
     
     protected void writeSettings()
@@ -93,6 +96,10 @@ public class SettingsManager implements GuildSettingsManager
                 o.put("default_playlist", s.getDefaultPlaylist());
             if(s.getRepeatMode())
                 o.put("repeat", true);
+            if (s.getPunRole() != 0)
+                o.put("pun_role", Long.toString(s.getPunRole()));
+            if (s.getPunVoice() != 0)
+                o.put("pun_voice", Long.toString(s.getPunVoice()));
             obj.put(Long.toString(key), o);
         });
         try {

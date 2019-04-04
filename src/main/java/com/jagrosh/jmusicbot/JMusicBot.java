@@ -27,6 +27,7 @@ import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
+import com.jagrosh.jmusicbot.pun.PunHandler;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 
@@ -56,6 +57,9 @@ public class JMusicBot {
     public static void main(String[] args) {
         // startup log
         Logger log = LoggerFactory.getLogger("Startup");
+
+        //SLAP: Manually set nogui here. Cause fuck GUI
+        System.setProperty("nogui", "true");
 
         // create prompt to handle startup
         Prompt prompt = new Prompt("JMusicBot", "Switching to nogui mode. You can manually start in nogui mode by including the -Dnogui=true flag.",
@@ -88,7 +92,10 @@ public class JMusicBot {
                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
-        aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
+        aboutCommand.setReplacementCharacter(EmojiParser.parseToUnicode(":notes:")); // 🎶
+
+        //Init the punHandler
+        PunHandler punHandler = new PunHandler(bot);
 
         // set up the command client
         CommandClientBuilder cb = new CommandClientBuilder()
@@ -135,7 +142,8 @@ public class JMusicBot {
                         new SetstatusCmd(),
                         new ShutdownCmd(bot),
 
-                        new TeamsCmd(bot)
+                        new TeamsCmd(bot),
+                        new PunCmd(bot, punHandler)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
