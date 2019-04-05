@@ -49,16 +49,19 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     private final Set<String> votes = new HashSet<>();
     
     private final PlayerManager manager;
+    private final RichTrackAdvanceHandler rtaHandler;
     private final AudioPlayer audioPlayer;
     private final long guildId;
     
     private AudioFrame lastFrame;
+
 
     protected AudioHandler(PlayerManager manager, Guild guild, AudioPlayer player)
     {
         this.manager = manager;
         this.audioPlayer = player;
         this.guildId = guild.getIdLong();
+        this.rtaHandler = new RichTrackAdvanceHandler(manager.getBot(), guildId, player);
     }
 
     public int addTrackToFront(QueuedTrack qtrack)
@@ -173,6 +176,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             QueuedTrack qt = queue.pull();
             player.playTrack(qt.getTrack());
         }
+        rtaHandler.onTrackEnd(track, endReason);
     }
 
     @Override
@@ -180,6 +184,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     {
         votes.clear();
         manager.getBot().getNowplayingHandler().onTrackUpdate(guildId, track, this);
+        rtaHandler.onTrackStart(track);
     }
 
     

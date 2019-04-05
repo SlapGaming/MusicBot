@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jmusicbot.utils.RoleUtils;
 import net.dv8tion.jda.core.Permission;
 
 /**
@@ -32,7 +33,7 @@ public abstract class AdminCommand extends Command
                 return true;
             if(event.getGuild()==null)
                 return true;
-            return event.getMember().hasPermission(Permission.MANAGE_SERVER);
+            return RoleUtils.isGuildAdmin(event.getMember());
         });
         this.guildOnly = true;
     }
