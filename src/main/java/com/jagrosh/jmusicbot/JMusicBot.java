@@ -109,6 +109,7 @@ public class JMusicBot {
                 .addCommands(aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(),
+                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
 
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),

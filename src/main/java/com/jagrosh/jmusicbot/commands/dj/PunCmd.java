@@ -19,6 +19,7 @@ public class PunCmd extends DJCommand {
         this.bot = bot;
         this.punHandler = punHandler;
         this.name = "pun";
+        this.aliases = new String[]{"fpun"};
         this.help = "pun-ish a user without vote. ";
         this.arguments = "<@user> <?seconds=30>";
         this.guildOnly = true;
