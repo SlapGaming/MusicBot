@@ -2,6 +2,7 @@ package com.jagrosh.jmusicbot.pun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
+import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.RoleUtils;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.managers.GuildController;
@@ -57,14 +58,17 @@ public class PunHandler {
         Member punMember = punishment.getPunMember();
         int timeout = punishment.getTimeout();
 
+        //Fetch guild settings
         Guild guild = event.getGuild();
-        long punRoleId = bot.getSettingsManager().getSettings(guild).getPunRole();
-        long punVCId = bot.getSettingsManager().getSettings(guild).getPunVoice();
-
+        Settings guildSettings = bot.getSettingsManager().getSettings(guild);
+        if (guildSettings == null) {
+            throw new PunException("Guild not set up for pun-ishment.");
+        }
+        long punRoleId = guildSettings.getPunRole();
+        long punVCId = guildSettings.getPunVoice();
         if (punRoleId == 0) {
             throw new PunException("Pun role not set in this guild.");
         }
-
         if (punVCId == 0) {
             throw new PunException("Pun voice channel not set in this guild.");
         }
@@ -77,11 +81,6 @@ public class PunHandler {
         VoiceChannel punVC = guild.getVoiceChannelById(punVCId);
         VoiceChannel origin = punMember.getVoiceState().getChannel();
         final boolean punRolable = !RoleUtils.hasHigherRoleThanBot(punMember);
-
-        if (punRolable) {
-            System.out.println(punMember.getAsMention() + " has higher role than bot.");
-        }
-
 
         //Add role and move user if still in voice.
         punished.add(punMember);
