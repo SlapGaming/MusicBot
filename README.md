@@ -1,5 +1,7 @@
 # Slap bot
 
+_This is a legacy version, abandoned after [upstream](https://github.com/jagrosh/MusicBot/) 0.2 overhaul._
+
 [![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/blob/master/LICENSE)
 [![Discord](https://discordapp.com/api/guilds/276858200853184522/widget.png)](https://discord.gg/wZes6v4)
 
