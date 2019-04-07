@@ -35,16 +35,16 @@ import org.json.JSONTokener;
  */
 public class OtherUtil
 {
-    public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
-                    + "Current version: %s\n"
-                    + "New Version: %s\n\n"
-                    + "Please visit https://github.com/jagrosh/MusicBot/releases/latest to get the latest release.";
-    
+    public static final String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
+            + "Current version: %s\n"
+            + "New Version: %s\n\n"
+            + "Please visit https://github.com/jagrosh/MusicBot/releases/latest to get the latest release.";
+
     public static InputStream imageFromUrl(String url)
     {
         if(url==null)
             return null;
-        try 
+        try
         {
             URL u = new URL(url);
             URLConnection urlConnection = u.openConnection();
@@ -54,7 +54,7 @@ public class OtherUtil
         catch(IOException | IllegalArgumentException ignore) {}
         return null;
     }
-    
+
     public static Game parseGame(String game)
     {
         if(game==null || game.trim().isEmpty() || game.trim().equalsIgnoreCase("default"))
@@ -78,7 +78,7 @@ public class OtherUtil
         }
         return Game.playing(game);
     }
-    
+
     public static OnlineStatus parseStatus(String status)
     {
         if(status==null || status.trim().isEmpty())
@@ -86,24 +86,34 @@ public class OtherUtil
         OnlineStatus st = OnlineStatus.fromKey(status);
         return st == null ? OnlineStatus.ONLINE : st;
     }
-    
+
     public static String checkVersion(Prompt prompt)
     {
-        // Get current version number
-        String version = getCurrentVersion();
-        
-        // Check for new version
-        String latestVersion = getLatestVersion();
-        
-        if(latestVersion!=null && !latestVersion.equals(version))
+        try
         {
-            prompt.alert(Prompt.Level.WARNING, "Version", String.format(NEW_VERSION_AVAILABLE, version, latestVersion));
+            // Get current version number
+            String version = getCurrentVersion();
+            int[] current = getVersionAsIntArray(version);
+
+            // Check for new version
+            String latestVersion = getLatestVersion();
+            int[] latestUpstream = getVersionAsIntArray(latestVersion);
+
+
+            if(isOutdated(latestUpstream, current))
+            {
+                prompt.alert(Prompt.Level.WARNING, "Version", String.format(NEW_VERSION_AVAILABLE, version, latestVersion));
+            }
+
+            return version;
         }
-        
-        // Return the current version
-        return version;
+        catch (NumberFormatException e)
+        {
+            prompt.alert(Prompt.Level.WARNING, "Version", e.getMessage());
+            return "UNKNOWN";
+        }
     }
-    
+
     public static String getCurrentVersion()
     {
         if(JMusicBot.class.getPackage()!=null && JMusicBot.class.getPackage().getImplementationVersion()!=null)
@@ -111,7 +121,7 @@ public class OtherUtil
         else
             return "UNKNOWN";
     }
-    
+
     public static String getLatestVersion()
     {
         try
@@ -139,5 +149,32 @@ public class OtherUtil
         {
             return null;
         }
+    }
+
+    public static int[] getVersionAsIntArray(String version) throws NumberFormatException
+    {
+        //assume the version string is a dotted string in the form of [0-9](.[0-9])*.
+        String[] s = version.split("\\.");
+        int[] result = new int[s.length];
+        for (int i = 0; i < s.length; i++)
+        {
+            result[i] = Integer.parseInt(s[i]);
+        }
+        return result;
+    }
+
+    public static boolean isOutdated(int[] latestUpstream, int[] current) throws NumberFormatException {
+        if (latestUpstream.length >= current.length)
+        {
+            throw new NumberFormatException("Upstream deviates from expected versioning, please check manually.");
+        }
+        else
+        {
+            for (int i = 0; i < latestUpstream.length; i++)
+            {
+                if (latestUpstream[i] > current[i]) return true;
+            }
+        }
+        return false;
     }
 }

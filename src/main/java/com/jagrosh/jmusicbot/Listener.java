@@ -15,6 +15,7 @@
  */
 package com.jagrosh.jmusicbot;
 
+import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import java.util.concurrent.TimeUnit;
 import net.dv8tion.jda.core.JDA;
@@ -72,11 +73,31 @@ public class Listener extends ListenerAdapter
                 User owner = bot.getJDA().getUserById(bot.getConfig().getOwnerId());
                 if(owner!=null)
                 {
-                    String currentVersion = OtherUtil.getCurrentVersion();
-                    String latestVersion = OtherUtil.getLatestVersion();
-                    if(latestVersion!=null && !currentVersion.equalsIgnoreCase(latestVersion))
+
+                    try
                     {
-                        String msg = String.format(OtherUtil.NEW_VERSION_AVAILABLE, currentVersion, latestVersion);
+                        // Get current version number
+                        String version = OtherUtil.getCurrentVersion();
+                        int[] current = OtherUtil.getVersionAsIntArray(version);
+
+                        // Check for new version
+                        String latestVersion = OtherUtil.getLatestVersion();
+                        int[] latestUpstream = OtherUtil.getVersionAsIntArray(latestVersion);
+
+
+                        if(OtherUtil.isOutdated(latestUpstream, current))
+                        {
+                            String msg = String.format(OtherUtil.NEW_VERSION_AVAILABLE, version, latestVersion);
+                            owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        String msg = String.format("Something unexpected happened while processing the version!\n"
+                                + "Caught Exception: %s\n\n"
+                                + "Please visit https://github.com/jagrosh/MusicBot/releases/latest to get the latest release.",
+                                e.getMessage());
                         owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
                     }
                 }
