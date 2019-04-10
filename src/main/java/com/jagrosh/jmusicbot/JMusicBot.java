@@ -123,13 +123,13 @@ public class JMusicBot {
                         new SkipCmd(bot),
 
                         new ForceskipCmd(bot),
+                        new MoveTrackCmd(bot),
                         new PauseCmd(bot),
                         new PlaynextCmd(bot, config.getLoading()),
                         new RepeatCmd(bot),
                         new SkiptoCmd(bot),
                         new StopCmd(bot),
                         new VolumeCmd(bot),
-                        new MoveTrackCmd(bot),
 
                         new SetdjCmd(),
                         new SettcCmd(),
