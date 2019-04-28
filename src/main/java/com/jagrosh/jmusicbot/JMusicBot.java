@@ -26,6 +26,7 @@ import com.jagrosh.jmusicbot.commands.misc.TeamsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
+import com.jagrosh.jmusicbot.got.GOTManager;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.pun.PunHandler;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
@@ -194,5 +195,17 @@ public class JMusicBot {
             log.error("Some aspect of the configuration is invalid: " + ex);
             System.exit(1);
         }
+
+        //Init GOT handler
+        //Needs some ugly delay for the bot to actually join the guilds. Hacky shit to be removed anyway.
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        new GOTManager(bot);
+                    }
+                },
+                2000
+        );
     }
 }
