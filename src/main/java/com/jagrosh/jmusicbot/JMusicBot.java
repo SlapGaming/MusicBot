@@ -146,6 +146,7 @@ public class JMusicBot {
 
                         new TeamsCmd(bot),
                         new PunCmd(bot, punHandler)
+                        ,new ManualGOTLockCommand(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
