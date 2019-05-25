@@ -109,7 +109,6 @@ public class JMusicBot {
                 .addCommands(aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(),
-                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
 
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
@@ -122,6 +121,7 @@ public class JMusicBot {
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
+                        new PunCmd(bot, punHandler),
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),
@@ -131,6 +131,7 @@ public class JMusicBot {
                         new StopCmd(bot),
                         new VolumeCmd(bot),
 
+                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
                         new SetdjCmd(),
                         new SettcCmd(),
                         new SetvcCmd(),
@@ -143,8 +144,7 @@ public class JMusicBot {
                         new SetstatusCmd(),
                         new ShutdownCmd(bot),
 
-                        new TeamsCmd(bot),
-                        new PunCmd(bot, punHandler)
+                        new TeamsCmd(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
