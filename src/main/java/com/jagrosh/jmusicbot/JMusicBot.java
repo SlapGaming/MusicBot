@@ -26,7 +26,6 @@ import com.jagrosh.jmusicbot.commands.misc.TeamsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
-import com.jagrosh.jmusicbot.got.GOTManager;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.pun.PunHandler;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
@@ -110,7 +109,6 @@ public class JMusicBot {
                 .addCommands(aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(),
-                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
 
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
@@ -123,6 +121,7 @@ public class JMusicBot {
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
+                        new PunCmd(bot, punHandler),
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),
@@ -132,6 +131,7 @@ public class JMusicBot {
                         new StopCmd(bot),
                         new VolumeCmd(bot),
 
+                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
                         new SetdjCmd(),
                         new SettcCmd(),
                         new SetvcCmd(),
@@ -144,9 +144,7 @@ public class JMusicBot {
                         new SetstatusCmd(),
                         new ShutdownCmd(bot),
 
-                        new TeamsCmd(bot),
-                        new PunCmd(bot, punHandler)
-                        ,new ManualGOTLockCommand(bot)
+                        new TeamsCmd(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
@@ -196,17 +194,5 @@ public class JMusicBot {
             log.error("Some aspect of the configuration is invalid: " + ex);
             System.exit(1);
         }
-
-        //Init GOT handler
-        //Needs some ugly delay for the bot to actually join the guilds. Hacky shit to be removed anyway.
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        new GOTManager(bot);
-                    }
-                },
-                2000
-        );
     }
 }
