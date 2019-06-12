@@ -37,7 +37,23 @@ public class OtherUtil
                     + "Current (slap) version: %s\n"
                     + "New (upstream) Version: %s\n\n"
                     + "Please poke the maintainer to update bot.";
-    
+
+
+    public static String loadResource(Object clazz, String name)
+    {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(clazz.getClass().getResourceAsStream(name))))
+        {
+            StringBuilder sb = new StringBuilder();
+            reader.lines().forEach(line -> sb.append("\r\n").append(line));
+            return sb.toString().trim();
+        }
+        catch(IOException ex)
+        {
+            return null;
+        }
+    }
+
+
     public static InputStream imageFromUrl(String url)
     {
         if(url==null)
