@@ -26,7 +26,6 @@ import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
-import com.jagrosh.jmusicbot.pun.PunHandler;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 
@@ -93,9 +92,6 @@ public class JMusicBot {
         aboutCommand.setIsAuthor(false);
         aboutCommand.setReplacementCharacter(EmojiParser.parseToUnicode(":notes:")); // 🎶
 
-        //Init the punHandler
-        PunHandler punHandler = new PunHandler(bot);
-
         // set up the command client
         CommandClientBuilder cb = new CommandClientBuilder()
                 .setPrefix(config.getPrefix())
@@ -120,7 +116,6 @@ public class JMusicBot {
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
-                        new PunCmd(bot, punHandler),
                         new ForceskipCmd(bot),
                         new MoveTrackCmd(bot),
                         new PauseCmd(bot),

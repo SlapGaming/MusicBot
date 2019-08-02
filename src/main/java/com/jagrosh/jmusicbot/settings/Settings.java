@@ -26,12 +26,12 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
  */
 public class Settings implements GuildSettingsProvider {
     private final SettingsManager manager;
-    protected long textId, voiceId, roleId, punRole, punVoice;
+    protected long textId, voiceId, roleId;
     private int volume;
     private String defaultPlaylist;
     private boolean repeatMode;
 
-    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode, String punRole, String punVoice) {
+    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, boolean repeatMode) {
         this.manager = manager;
         try {
             this.textId = Long.parseLong(textId);
@@ -48,22 +48,12 @@ public class Settings implements GuildSettingsProvider {
         } catch (NumberFormatException e) {
             this.roleId = 0;
         }
-        try {
-            this.punRole = Long.parseLong(punRole);
-        } catch (NumberFormatException e) {
-            this.punRole = 0;
-        }
-        try {
-            this.punVoice = Long.parseLong(punVoice);
-        } catch (NumberFormatException e) {
-            this.punVoice = 0;
-        }
         this.volume = volume;
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
     }
 
-    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode, long punRole, long punVoice) {
+    public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, boolean repeatMode) {
         this.manager = manager;
         this.textId = textId;
         this.voiceId = voiceId;
@@ -71,8 +61,6 @@ public class Settings implements GuildSettingsProvider {
         this.volume = volume;
         this.defaultPlaylist = defaultPlaylist;
         this.repeatMode = repeatMode;
-        this.punRole = punRole;
-        this.punVoice = punVoice;
     }
 
     // Getters
@@ -98,14 +86,6 @@ public class Settings implements GuildSettingsProvider {
 
     public boolean getRepeatMode() {
         return repeatMode;
-    }
-
-    public long getPunRole() {
-        return punRole;
-    }
-
-    public long getPunVoice() {
-        return punVoice;
     }
 
     // Setters
@@ -137,13 +117,5 @@ public class Settings implements GuildSettingsProvider {
     public void setRepeatMode(boolean mode) {
         this.repeatMode = mode;
         this.manager.writeSettings();
-    }
-
-    public void setPunRole(long punRole) {
-        this.punRole = punRole;
-    }
-
-    public void setPunVoice(long punVoice) {
-        this.punVoice = punVoice;
     }
 }
