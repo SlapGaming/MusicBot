@@ -22,7 +22,6 @@ import com.jagrosh.jdautilities.examples.command.*;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.general.*;
-import com.jagrosh.jmusicbot.commands.misc.TeamsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
@@ -142,9 +141,7 @@ public class JMusicBot {
                         new SetgameCmd(),
                         new SetnameCmd(),
                         new SetstatusCmd(),
-                        new ShutdownCmd(bot),
-
-                        new TeamsCmd(bot)
+                        new ShutdownCmd(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
