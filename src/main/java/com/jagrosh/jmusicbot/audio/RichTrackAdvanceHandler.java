@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiParser;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -20,8 +21,14 @@ import java.util.List;
 import static com.jagrosh.jmusicbot.utils.FormatUtil.formatTime;
 
 public class RichTrackAdvanceHandler {
-    private final AudioPlayer player;
-    private final List<String> trackAdvanceButtons = Arrays.asList(":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:");
+    private static final String low_volume = ":speaker:";
+    private static final String med_volume = ":sound:";
+    private static final String high_volume = ":loud_sound:";
+    private static final String stop_playback = ":black_square_for_stop:";
+    private static final String skip_track = ":black_right_pointing_double_triangle_with_vertical_bar:";
+    private static final List<String> trackAdvanceButtons = Arrays.asList(low_volume, med_volume, high_volume, stop_playback, skip_track);
+
+    private final AudioHandler handler;
     private final Bot bot;
     private final Guild guild;
     private final TextChannel musicTextChannel;
@@ -29,9 +36,9 @@ public class RichTrackAdvanceHandler {
 
     private Message trackAdvanceMessage;
 
-    public RichTrackAdvanceHandler(Bot bot, long guildId, AudioPlayer player) {
+    public RichTrackAdvanceHandler(Bot bot, long guildId, AudioHandler audioHandler) {
         this.bot = bot;
-        this.player = player;
+        this.handler = audioHandler;
         this.guild = bot.getJDA().getGuildById(guildId);
 
         //Fetch the text channel set for this guild.
@@ -162,7 +169,23 @@ public class RichTrackAdvanceHandler {
                     String re = event.getReaction().getReactionEmote().isEmote()
                             ? event.getReaction().getReactionEmote().getId()
                             : event.getReaction().getReactionEmote().getName();
-                    player.setVolume(trackAdvanceButtons.indexOf(EmojiParser.parseToAliases(re)) * 10 + 10);
+                    switch(EmojiParser.parseToAliases(re)){
+                        case low_volume:
+                            handler.getPlayer().setVolume(10);
+                            break;
+                        case med_volume:
+                            handler.getPlayer().setVolume(20);
+                            break;
+                        case high_volume:
+                            handler.getPlayer().setVolume(30);
+                            break;
+                        case stop_playback:
+                            handler.stopAndClear(); //wipes the queue, then stops the current track.
+                            break;
+                        case skip_track:
+                            handler.getPlayer().stopTrack(); //This stops the current track, playing the next in queue if available.
+                            break;
+                    }
 
                     event.getReaction().removeReaction(event.getUser()).queue();
                     trackAdvanceMessage.editMessage(richTrackMessage()).queue();

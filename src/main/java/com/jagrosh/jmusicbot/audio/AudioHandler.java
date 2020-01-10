@@ -61,7 +61,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         this.manager = manager;
         this.audioPlayer = player;
         this.guildId = guild.getIdLong();
-        this.rtaHandler = new RichTrackAdvanceHandler(manager.getBot(), guildId, player);
+        this.rtaHandler = new RichTrackAdvanceHandler(manager.getBot(), guildId, this);
     }
 
     public int addTrackToFront(QueuedTrack qtrack)
