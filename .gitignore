@@ -55,6 +55,7 @@ target/
 /nbproject/
 /target/
 /Playlists/
+/test/
 *.json
 *.txt
 nb*.xml
