@@ -4,11 +4,9 @@ package com.jagrosh.jmusicbot.audio;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiParser;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -111,7 +109,8 @@ public class RichTrackAdvanceHandler {
             eb.addField("Length", formatTime(ah.getPlayer().getPlayingTrack().getDuration()), true);
 
             String slapLogoURL = "https://telluur.com/img/slaplogoemoji.jpg";
-            eb.setFooter(EmojiParser.parseToUnicode("Use the number emojis :1234: to quickly set the volume, or use the volume command."), slapLogoURL);
+            String footerMsg = String.format("%s for volume. %s stop and clear queue. %s skips current track.", med_volume, stop_playback, skip_track);
+            eb.setFooter(EmojiParser.parseToUnicode(footerMsg), slapLogoURL);
 
 
         }
@@ -169,7 +168,7 @@ public class RichTrackAdvanceHandler {
                     String re = event.getReaction().getReactionEmote().isEmote()
                             ? event.getReaction().getReactionEmote().getId()
                             : event.getReaction().getReactionEmote().getName();
-                    switch(EmojiParser.parseToAliases(re)){
+                    switch (EmojiParser.parseToAliases(re)) {
                         case low_volume:
                             handler.getPlayer().setVolume(10);
                             break;
