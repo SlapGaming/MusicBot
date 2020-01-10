@@ -101,7 +101,7 @@ public class Listener extends ListenerAdapter
                         owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
                     }
                 }
-            }, 0, 24, TimeUnit.HOURS);
+            }, 0, 14, TimeUnit.DAYS);
         }
     }
     
