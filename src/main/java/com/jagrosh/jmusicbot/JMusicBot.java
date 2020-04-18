@@ -166,9 +166,9 @@ public class JMusicBot {
                         + "window, please run in nogui mode using the -Dnogui=true flag.");
             }
         }
-
+        
         log.info("Loaded config from " + config.getConfigLocation());
-
+        
         // attempt to log in and start
         try {
             JDA jda = new JDABuilder(AccountType.BOT)
