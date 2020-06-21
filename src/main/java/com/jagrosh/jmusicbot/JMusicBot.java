@@ -125,7 +125,6 @@ public class JMusicBot {
                         new StopCmd(bot),
                         new VolumeCmd(bot),
 
-                        new ClearBotChatCmd(bot, config.getPrefix(), config.getAltPrefix()),
                         new PrefixCmd(bot),
                         new SetdjCmd(bot),
                         new SettcCmd(bot),
