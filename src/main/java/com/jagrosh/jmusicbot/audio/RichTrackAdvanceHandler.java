@@ -5,14 +5,12 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.vdurmont.emoji.EmojiParser;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +44,7 @@ public class RichTrackAdvanceHandler {
         //Fetch the text channel set for this guild.
         Settings guildSettings = Objects.requireNonNull(bot.getSettingsManager().getSettings(guild), "Bot settings was null");
         musicTextChannel = Objects.requireNonNull(guildSettings.getTextChannel(guild), "Music tx was null");
-        djRole = Objects.requireNonNull(guildSettings.getRole(guild), "DJ role was null");
+        djRole = guildSettings.getRole(guild);
         bot.getJDA().addEventListener(new RichTrackAdvanceButtonListener());
     }
 
@@ -196,7 +194,7 @@ public class RichTrackAdvanceHandler {
         }
 
         private boolean isDJ(Member member) {
-            return member.getRoles().stream().anyMatch(role -> role.getIdLong() == djRole.getIdLong());
+            return djRole != null && member.getRoles().stream().anyMatch(role -> role.getIdLong() == djRole.getIdLong());
         }
 
         private boolean isRequester(Member member) {

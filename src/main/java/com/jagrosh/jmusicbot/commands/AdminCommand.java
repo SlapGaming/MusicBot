@@ -16,8 +16,8 @@
 package com.jagrosh.jmusicbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
+import net.dv8tion.jda.api.Permission;
 import com.jagrosh.jmusicbot.utils.RoleUtils;
-import net.dv8tion.jda.core.Permission;
 
 /**
  *
