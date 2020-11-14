@@ -101,6 +101,7 @@ public class JMusicBot {
                 .setLinkedCacheSize(200)
                 .setGuildSettingsManager(settings)
                 .addCommands(aboutCommand,
+                        new VersionCmd(version),
                         new PingCommand(),
                         new SettingsCmd(bot),
                         
